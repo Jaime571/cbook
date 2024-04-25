@@ -13,7 +13,7 @@ import { CredencialesModule } from 'src/credenciales/credenciales.module';
       username: 'postgres',
       password: 'admin',
       database: 'test2',
-      entities: [Credenciales],
+      entities: ["dist/**/*.entity{.ts,.js}"],
       //No utilizar "synchronize: true" en prod
       synchronize: true,
       retryAttempts: 5,
