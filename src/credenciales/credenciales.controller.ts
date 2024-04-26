@@ -4,15 +4,15 @@ import { CreateCredentialDto } from './dto/credenciales.dto';
 
 @Controller('credenciales')
 export class CredencialesController {
-    constructor( private credencialesService: CredencialesService) {}
+  constructor(private credencialesService: CredencialesService) {}
 
-    @Post('/crear')
-    create(@Body() body: CreateCredentialDto): Promise<CreateCredentialDto> {
-        return this.credencialesService.create(body);
-    }
+  @Post('/crear')
+  create(@Body() body: CreateCredentialDto): Promise<CreateCredentialDto> {
+    return this.credencialesService.create(body);
+  }
 
-    @Get('/:codigo')
-    getOne(@Param('codigo') codigo: string): Promise<CreateCredentialDto> {
-        return this.credencialesService.findOne(codigo);
-    }
+  @Get('/:codigo')
+  getOne(@Param('codigo') codigo: string): Promise<CreateCredentialDto> {
+    return this.credencialesService.findOne(codigo);
+  }
 }
