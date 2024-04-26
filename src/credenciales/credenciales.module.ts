@@ -8,6 +8,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([Credenciales])],
   exports: [TypeOrmModule, CredencialesService],
   providers: [CredencialesService],
-  controllers: [CredencialesController]
+  controllers: [CredencialesController],
 })
 export class CredencialesModule {}
