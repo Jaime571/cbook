@@ -15,5 +15,5 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  profileImage: string;
+  imagenPerfil: string;
 }

@@ -11,35 +11,30 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('create')
+  @Post('post')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
-  @Get('obtain')
-  findAll() {
-    return this.usersService.findAll();
+  @Get('get')
+  findOne(@Param('codigo') codigo: string) {
+    return this.usersService.findOne(codigo);
   }
 
-  //implement
-  @Get('obtain/:id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Patch('patch')
+  update(
+    @Param('codigo') codigo: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(codigo, updateUserDto);
   }
 
-  //implement
-  @Patch('modify/:id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
-
-  //implement
-  @Delete('erase/:id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @Delete('delete')
+  remove(@Param('codigo') codigo: string) {
+    return this.usersService.remove(codigo);
   }
 }
