@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Credenciales } from './credenciales.entity';
 import { Repository } from 'typeorm';
-import { CreateCredentialDto } from './dto/credenciales.dto';
 
 import * as bcrypt from 'bcrypt';
+
+import { Credenciales } from './entities';
+import { CreateCredentialDto } from './dto/credenciales.dto';
 
 @Injectable()
 export class CredencialesService {

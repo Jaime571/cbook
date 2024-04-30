@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { CredencialesService } from './credenciales.service';
 import { CredencialesController } from './credenciales.controller';
-import { Credenciales } from './credenciales.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { Credenciales } from './entities';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Credenciales])],
