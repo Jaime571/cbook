@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -12,23 +17,73 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto): void {
-    this.userRepository.save(createUserDto);
+  create(user: CreateUserDto): CreateUserDto {
+    const newRecord = this.userRepository.create(user);
+    this.userRepository.save(newRecord);
+    return user;
   }
 
   findAll() {
     return this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return `Finded id ${id}`;
+  async findOne(codigo: string): Promise<User> {
+    let user: User;
+    try {
+      user = await this.userRepository.findOne({ where: { codigo } });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Server failed to search for the user',
+      );
+    }
+    if (!user) {
+      throw new NotFoundException('User not found in database');
+    }
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(codigo: string, updateUserDto: UpdateUserDto): Promise<User> {
+    if (!updateUserDto || Object.keys(updateUserDto).length === 0) {
+      throw new BadRequestException('No values sent to modify');
+    }
+
+    let user: User;
+    try {
+      user = await this.userRepository.findOne({
+        where: { codigo },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Server failed to search for the user',
+      );
+    }
+
+    if (!user) {
+      throw new NotFoundException('User not found in database');
+    }
+    Object.assign(user, updateUserDto);
+
+    try {
+      await this.userRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Server failed to update the user',
+      );
+    }
+    return user;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(codigo: string): Promise<User> {
+    let user: User;
+    try {
+      user = await this.userRepository.findOne({ where: { codigo } });
+    } catch (error) {
+      throw new InternalServerErrorException('Server failed to delete user');
+    }
+    if (!user) {
+      throw new NotFoundException('User not found in database');
+    }
+    this.userRepository.remove(user);
+    return user;
   }
 }
