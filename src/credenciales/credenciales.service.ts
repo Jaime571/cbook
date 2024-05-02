@@ -7,6 +7,8 @@ import * as bcrypt from 'bcrypt';
 import { Credenciales } from './entities';
 import { CreateCredentialDto } from './dto/credenciales.dto';
 
+
+
 @Injectable()
 export class CredencialesService {
   constructor(
