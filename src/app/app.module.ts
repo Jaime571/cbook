@@ -8,6 +8,7 @@ import { AppController } from './app.controller';
 import { AuthModule } from 'src/auth/auth.module';
 import { CredencialesModule } from 'src/credenciales/credenciales.module';
 import { UsersModule } from 'src/users/users.module';
+import { LibroModule } from 'src/libro/libro.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { UsersModule } from 'src/users/users.module';
     AuthModule,
     CredencialesModule,
     UsersModule,
+    LibroModule
   ],
   controllers: [AppController],
   providers: [AppService],
