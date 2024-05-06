@@ -25,7 +25,7 @@ export class UsersController {
     return this.usersService.findOne(codigo);
   }
 
-  @Patch('patch')
+  @Patch('patch/:codigo')
   update(
     @Param('codigo') codigo: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -33,7 +33,7 @@ export class UsersController {
     return this.usersService.update(codigo, updateUserDto);
   }
 
-  @Delete('delete')
+  @Delete('delete/:codigo')
   remove(@Param('codigo') codigo: string) {
     return this.usersService.remove(codigo);
   }
