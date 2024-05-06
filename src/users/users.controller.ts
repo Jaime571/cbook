@@ -20,7 +20,7 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get('get')
+  @Get('get/:codigo')
   findOne(@Param('codigo') codigo: string) {
     return this.usersService.findOne(codigo);
   }
