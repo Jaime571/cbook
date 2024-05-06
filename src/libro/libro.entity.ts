@@ -1,5 +1,6 @@
 import { IsNotEmpty } from "class-validator";
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { UserLibro } from "./user_libro.entity";
 
 @Entity()
 export class Libro {
@@ -29,4 +30,7 @@ export class Libro {
     @Column()
     @IsNotEmpty()
     calificacion: number
+
+    @OneToMany(() => UserLibro, (libroUser) => libroUser.user)
+    users: UserLibro[]
 }
