@@ -1,8 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
+
 import { AuthModule } from 'src/auth/auth.module';
 import { CredencialesModule } from 'src/credenciales/credenciales.module';
+import { UsersModule } from 'src/users/users.module';
 import { LibroModule } from 'src/libro/libro.module';
 
 @Module({
@@ -21,16 +26,17 @@ import { LibroModule } from 'src/libro/libro.module';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: ["dist/**/*.entity{.ts,.js}"],
-        //No utilizar "synchronize: true" en prod
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        autoLoadEntities: true,
         synchronize: true,
-        retryAttempts: 5,
-        retryDelay: 3000,
-        autoLoadEntities: true
       }),
     }),
-    AuthModule, CredencialesModule, LibroModule],
-  controllers: [],
-  // providers: [AppService],
+    AuthModule,
+    CredencialesModule,
+    UsersModule,
+    LibroModule
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -9,14 +9,13 @@ import { CredencialesModule } from 'src/credenciales/credenciales.module';
   imports: [
     CredencialesModule,
     JwtModule.register({
-        global: true,
-        secret: jwtConstants.secret,
-        signOptions: {expiresIn: '60s'},
-    })
-],
+      global: true,
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '60s' },
+    }),
+  ],
   providers: [AuthService],
   controllers: [AuthController],
   exports: [AuthService],
 })
-
 export class AuthModule {}
