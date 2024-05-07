@@ -24,4 +24,13 @@ export class AuthService {
       access_token: await this.jwtService.signAsync(payload),
     };
   }
+
+  async verifyToken(access_token: string) {
+    try {
+      const decoded = await this.jwtService.verifyAsync(access_token);
+      return decoded;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
 }
