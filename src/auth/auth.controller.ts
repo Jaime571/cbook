@@ -11,4 +11,16 @@ export class AuthController {
   signIn(@Body() signInDto: LoginDTO) {
     return this.authService.signIn(signInDto);
   }
+
+  @Post('verifyToken')
+  async verifyToken(@Body() { access_token }: { access_token: string }) {
+    try {
+      const decoded = await this.authService.verifyToken(access_token);
+      return { isValid: true, decoded };
+    } catch (error) {
+      console.log('Error al autenticar:', error);
+
+      return { isValid: false };
+    }
+  }
 }
