@@ -27,6 +27,10 @@ export class CreateBookDto {
     @IsNotEmpty()
     @IsNumber()
     calificacion: number
+    
+    @IsNotEmpty()
+    @IsNumber()
+    intercambios: number
 }
 
 export class CreatedBookResponseDto {
@@ -68,6 +72,10 @@ export class RetrieveBookDto {
     @IsNotEmpty()
     @IsNumber()
     calificacion?: number
+
+    @IsNotEmpty()
+    @IsNumber()
+    intercambios?: number
 }
 
 export class UpdateBookDto {
@@ -95,4 +103,8 @@ export class UpdateBookDto {
     // @IsNotEmpty()
     @IsNumber()
     calificacion?: number
+
+    // @IsNotEmpty()
+    @IsNumber()
+    intercambios?: number
 }
