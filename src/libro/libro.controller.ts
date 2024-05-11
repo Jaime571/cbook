@@ -20,6 +20,11 @@ export class LibroController {
     findAll(): Promise<RetrieveBookDto[]> {
         return this.libroService.retrieveBooks();
     }
+    
+    @Get('/recomendados')
+    findAllRecomends(): Promise<RetrieveBookDto[]> {
+        return this.libroService.recomends();
+    }
 
     @Patch('/buscar/:id')
     updateBook(
