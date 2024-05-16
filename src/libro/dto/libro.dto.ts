@@ -1,4 +1,7 @@
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
+import { User } from "src/users/entities";
+import { Libro } from "../libro.entity";
+import { UserLibro } from "../user_libro.entity";
 
 export class CreateBookDto {
     
@@ -46,36 +49,37 @@ export class CreatedBookResponseDto {
 export class RetrieveBookDto {
     
     @IsNotEmpty()
-    @IsUUID()
-    idLibro?: string;
+    idLibro: string;
 
     @IsNotEmpty()
     @IsString()
-    titulo?: string
+    titulo: string
 
     @IsNotEmpty()
     @IsString()
-    editorial?: string
+    editorial: string
 
     @IsNotEmpty()
     @IsString()
-    descripcion?: string
+    descripcion: string
 
     @IsNotEmpty()
     @IsString()
-    sinopsis?:string
+    sinopsis:string
 
     @IsNotEmpty()
     @IsString()
-    autor?: string
+    autor: string
 
     @IsNotEmpty()
     @IsNumber()
-    calificacion?: number
+    calificacion: number
 
     @IsNotEmpty()
     @IsNumber()
-    intercambios?: number
+    intercambios: number
+
+    users: UserLibro[]
 }
 
 export class UpdateBookDto {
@@ -107,4 +111,26 @@ export class UpdateBookDto {
     // @IsNotEmpty()
     @IsNumber()
     intercambios?: number
+}
+
+export class LinkReferencesDto {
+
+    // @IsNotEmpty()
+    @IsString()
+    user?: string
+
+    // @IsNotEmpty()
+    @IsString()
+    libro?: string
+}
+
+export class PayloadLinkReferencesDto {
+
+    // @IsNotEmpty()
+    @IsString()
+    user?: User
+
+    // @IsNotEmpty()
+    @IsString()
+    libro?: Libro
 }

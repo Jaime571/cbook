@@ -15,7 +15,7 @@ export class UserLibro {
     @ManyToOne(() => Libro, (libro) => libro.idLibro)
     libro: Libro
 
-    @Column({ default: false })
+    @Column({ default: true })
     @IsNotEmpty()
     disponible: boolean
 }

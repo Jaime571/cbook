@@ -1,16 +1,23 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Libro } from './libro.entity';
 import { MoreThan, Repository } from 'typeorm';
-import { CreateBookDto, CreatedBookResponseDto, RetrieveBookDto, UpdateBookDto } from './dto/libro.dto';
+import { CreateBookDto, CreatedBookResponseDto, LinkReferencesDto, PayloadLinkReferencesDto, RetrieveBookDto, UpdateBookDto } from './dto/libro.dto';
 
 import { v4 as uuidv4 } from 'uuid';
+import { UserLibro } from './user_libro.entity';
+import { UsersService } from 'src/users/users.service';
+import { User } from 'src/users/entities';
 
 @Injectable()
 export class LibroService {
     constructor(
         @InjectRepository(Libro)
-        private libroRepository: Repository<Libro>
+        private libroRepository: Repository<Libro>,
+        @InjectRepository(UserLibro)
+        private libroUserRepository: Repository<UserLibro>,
+        @InjectRepository(User)
+        private userRepository: Repository<User>
     ) { }
 
     async retrieveBook(titulo: string): Promise<RetrieveBookDto[]> {
@@ -20,7 +27,6 @@ export class LibroService {
             },
         });
         if (book.length === 0) throw new NotFoundException('Titulo no encontrado');
-        console.log(book);
         return book;
     }
 
@@ -79,4 +85,40 @@ export class LibroService {
 
         return books;
     }
+
+    async linkBookToUser(creds: LinkReferencesDto): Promise<string>{
+
+        let obj: PayloadLinkReferencesDto;
+        let libro = await this.retrieveBook(creds.libro);
+        let user =  await this.findOne(creds.user);
+
+        // console.log(JSON.stringify(libro));
+        // console.log(JSON.stringify(user));
+        
+        obj = {
+            user: user,
+            libro: libro[0]
+        };
+        // console.log(JSON.stringify(obj));
+
+        const credsObj = this.libroUserRepository.create(obj);
+        const Obj = this.libroUserRepository.save(credsObj);
+
+        return 'ok';
+    }
+
+    async findOne(codigo: string): Promise<User> {
+        let user: User;
+        try {
+          user = await this.userRepository.findOne({ where: { codigo } });
+        } catch (error) {
+          throw new InternalServerErrorException(
+            'Server failed to search for the user',
+          );
+        }
+        if (!user) {
+          throw new NotFoundException('User not found in database');
+        }
+        return user;
+      }
 }
