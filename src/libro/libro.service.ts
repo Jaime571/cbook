@@ -86,31 +86,25 @@ export class LibroService {
         return books;
     }
 
-    async linkBookToUser(creds: LinkReferencesDto): Promise<any>{
+    async linkBookToUser(creds: LinkReferencesDto): Promise<string>{
 
         let obj: PayloadLinkReferencesDto;
         let libro = await this.retrieveBook(creds.libro);
         let user =  await this.findOne(creds.user);
 
-        console.log(JSON.stringify(libro));
+        // console.log(JSON.stringify(libro));
         // console.log(JSON.stringify(user));
         
         obj = {
-            user: user[0],
+            user: user,
             libro: libro[0]
         };
-
-        console.log(JSON.stringify(obj));
+        // console.log(JSON.stringify(obj));
 
         const credsObj = this.libroUserRepository.create(obj);
         const Obj = this.libroUserRepository.save(credsObj);
-        console.log((await Obj).id);
 
-
-        // let myuuid = uuidv4();
-        // console.log(myuuid);
-        // creds.idLibro = uuidv4();
-        return
+        return 'ok';
     }
 
     async findOne(codigo: string): Promise<User> {
