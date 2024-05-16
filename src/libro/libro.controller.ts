@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { LibroService } from './libro.service';
-import { CreateBookDto, CreatedBookResponseDto, RetrieveBookDto, UpdateBookDto } from './dto/libro.dto';
+import { CreateBookDto, CreatedBookResponseDto, LinkReferencesDto, RetrieveBookDto, UpdateBookDto } from './dto/libro.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Controller('libro')
 export class LibroController {
@@ -9,6 +10,11 @@ export class LibroController {
     @Post('/crear')
     create(@Body() body: CreateBookDto): Promise<CreatedBookResponseDto> {
         return this.libroService.create(body);
+    }
+
+    @Post('/registrar/libroUsuario')
+    createLinkBetweenBookUser(@Body() body: LinkReferencesDto): Promise<CreatedBookResponseDto> {
+        return this.libroService.linkBookToUser(body);
     }
 
     @Get('/buscar/:titulo')
@@ -20,7 +26,7 @@ export class LibroController {
     findAll(): Promise<RetrieveBookDto[]> {
         return this.libroService.retrieveBooks();
     }
-    
+
     @Get('/recomendados')
     findAllRecomends(): Promise<RetrieveBookDto[]> {
         return this.libroService.recomends();

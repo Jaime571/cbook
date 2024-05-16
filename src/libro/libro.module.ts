@@ -4,9 +4,11 @@ import { LibroController } from './libro.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Libro } from './libro.entity';
 import { UserLibro } from './user_libro.entity';
+import { UsersModule } from 'src/users/users.module';
+import { User } from 'src/users/entities';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Libro, UserLibro])],
+  imports: [TypeOrmModule.forFeature([Libro, UserLibro, User])],
   exports: [TypeOrmModule, LibroService],
   providers: [LibroService],
   controllers: [LibroController]

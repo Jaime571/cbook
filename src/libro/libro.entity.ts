@@ -35,7 +35,7 @@ export class Libro {
     @IsNotEmpty()
     intercambios: number
 
-    @OneToMany(() => UserLibro, (libroUser) => libroUser.user)
+    @OneToMany(() => UserLibro, (libroUser) => libroUser.user, { cascade: ['insert', 'update'] })
     users: UserLibro[]
 }
 

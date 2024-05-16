@@ -41,6 +41,6 @@ export class User {
   credenciales: Credenciales;
 
   //implementar relacion con libros
-  @OneToMany(() => UserLibro, (userLibro) => userLibro.libro)
+  @OneToMany(() => UserLibro, (userLibro) => userLibro.libro, { cascade: ['insert', 'update'] })
   libros: UserLibro[]
 }
