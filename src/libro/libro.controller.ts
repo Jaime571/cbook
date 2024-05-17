@@ -13,7 +13,7 @@ export class LibroController {
     }
 
     @Post('/registrar/libroUsuario')
-    createLinkBetweenBookUser(@Body() body: LinkReferencesDto): Promise<CreatedBookResponseDto> {
+    createLinkBetweenBookUser(@Body() body: LinkReferencesDto): Promise<string> {
         return this.libroService.linkBookToUser(body);
     }
 
