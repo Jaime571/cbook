@@ -12,12 +12,14 @@ import { Repository } from 'typeorm';
 import { User } from './entities';
 import { UploadService } from 'src/upload/upload.service';
 import { UserImageInsertDto } from './dto/image-insert.dto';
+import { CredencialesService } from 'src/credenciales/credenciales.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     private readonly uploadService: UploadService,
+    private readonly credencialesService: CredencialesService,
   ) {}
 
   async create(
@@ -64,6 +66,29 @@ export class UsersService {
       throw new NotFoundException('User not found in database');
     }
     return user;
+  }
+
+  async getUserWithReports(codigo: string) {
+    try {
+      const user = await this.userRepository.findOne({
+        where: {
+          codigo,
+        },
+        relations: {
+          reportes: true,
+        },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found in database');
+      }
+      return user;
+    } catch (err) {
+      throw new InternalServerErrorException(
+        'Server failed to retrieve user with reports',
+        err,
+      );
+    }
   }
 
   async update(codigo: string, updateUserDto: UpdateUserDto): Promise<User> {
@@ -158,6 +183,27 @@ export class UsersService {
       throw new InternalServerErrorException(
         'Server failed to get user with books',
       );
+    }
+  }
+
+  async addStrike(codigo: string): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { codigo },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found in database');
+      }
+      if (user.strikes < 3) {
+        user.strikes++;
+      }
+      if (user.strikes === 3) {
+        this.credencialesService.habilitateUser(codigo, false);
+        return user;
+      }
+      return this.userRepository.save(user);
+    } catch (err) {
+      throw new InternalServerErrorException('Server failed to add a strike');
     }
   }
 }

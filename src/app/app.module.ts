@@ -10,6 +10,8 @@ import { CredencialesModule } from 'src/credenciales/credenciales.module';
 import { UsersModule } from 'src/users/users.module';
 import { BooksModule } from 'src/books/books.module';
 import { UploadModule } from 'src/upload/upload.module';
+import { ChatModule } from 'src/chat/chat.module';
+import { ReportesModule } from 'src/reportes/reportes.module';
 
 @Module({
   imports: [
@@ -37,6 +39,8 @@ import { UploadModule } from 'src/upload/upload.module';
     UsersModule,
     BooksModule,
     UploadModule,
+    ChatModule,
+    ReportesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

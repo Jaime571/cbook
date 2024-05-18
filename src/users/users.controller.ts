@@ -44,6 +44,11 @@ export class UsersController {
     return this.usersService.getUserBooks(codigo);
   }
 
+  @Get('withReports/:codigo')
+  getUserWithReports(@Param('codigo') codigo: string) {
+    return this.usersService.getUserWithReports(codigo);
+  }
+
   @Patch('patch/:codigo')
   update(
     @Param('codigo') codigo: string,
@@ -69,5 +74,10 @@ export class UsersController {
   @Delete('delete/:codigo')
   remove(@Param('codigo') codigo: string) {
     return this.usersService.remove(codigo);
+  }
+
+  @Patch('addStrike/:codigo')
+  addStrike(@Param('codigo') codigo: string) {
+    return this.usersService.addStrike(codigo);
   }
 }

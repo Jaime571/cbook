@@ -1,5 +1,6 @@
 import { Book } from 'src/books/entities/book.entity';
 import { Credenciales } from 'src/credenciales/entities';
+import { Report } from 'src/reportes/entities/reportes.entity';
 import {
   Column,
   CreateDateColumn,
@@ -43,4 +44,7 @@ export class User {
   //implementar relacion con libros
   @OneToMany(() => Book, (book) => book.user)
   libros: Book[];
+
+  @OneToMany(() => Report, (report) => report.user)
+  reportes: Report[];
 }
