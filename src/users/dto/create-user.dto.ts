@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
   @IsString()
@@ -8,12 +8,4 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   nombre: string;
-
-  @IsInt()
-  @IsNotEmpty()
-  strikes: number;
-
-  @IsString()
-  @IsNotEmpty()
-  imagenPerfil: string;
 }

@@ -6,19 +6,32 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('post')
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @UseInterceptors(FileInterceptor('file'))
+  create(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 2097152 })],
+      }),
+    )
+    file: Express.Multer.File,
+    @Body() createUserDto: CreateUserDto,
+  ) {
+    return this.usersService.create(createUserDto, file);
   }
 
   @Get('get/:codigo')
@@ -37,6 +50,20 @@ export class UsersController {
     @Body() updateUserDto: UpdateUserDto,
   ) {
     return this.usersService.update(codigo, updateUserDto);
+  }
+
+  @Patch('patchImage/:codigo')
+  @UseInterceptors(FileInterceptor('file'))
+  updateImage(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [new MaxFileSizeValidator({ maxSize: 2097152 })],
+      }),
+    )
+    file: Express.Multer.File,
+    @Param('codigo') codigo: string,
+  ) {
+    return this.usersService.updateImage(codigo, file);
   }
 
   @Delete('delete/:codigo')

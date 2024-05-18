@@ -10,17 +10,41 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities';
+import { UploadService } from 'src/upload/upload.service';
+import { UserImageInsertDto } from './dto/image-insert.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    private readonly uploadService: UploadService,
   ) {}
 
-  create(user: CreateUserDto): CreateUserDto {
-    const newRecord = this.userRepository.create(user);
-    this.userRepository.save(newRecord);
-    return user;
+  async create(
+    user: CreateUserDto,
+    file: Express.Multer.File,
+  ): Promise<CreateUserDto> {
+    try {
+      const { codigo } = user;
+      const tituloCreator: UserImageInsertDto = {
+        codigo,
+        credencial: true,
+      };
+
+      const url = await this.uploadService.uploadUserImages(
+        tituloCreator,
+        file.buffer,
+      );
+
+      const newRecord = this.userRepository.create(user);
+      newRecord.imagenCredencial = url;
+      return await this.userRepository.save(newRecord);
+    } catch (err) {
+      throw new InternalServerErrorException(
+        'Server failed to create user:',
+        err,
+      );
+    }
   }
 
   findAll() {
@@ -71,6 +95,37 @@ export class UsersService {
       );
     }
     return user;
+  }
+
+  async updateImage(codigo: string, file: Express.Multer.File): Promise<User> {
+    try {
+      const user: User = await this.userRepository.findOne({
+        where: { codigo },
+      });
+
+      if (!user) {
+        throw new NotFoundException('User not found in database');
+      }
+
+      const titleCreator: UserImageInsertDto = {
+        codigo,
+        credencial: false,
+      };
+
+      const urlImagen = await this.uploadService.uploadUserImages(
+        titleCreator,
+        file.buffer,
+      );
+
+      user.imagenPerfil = urlImagen;
+
+      return await this.userRepository.save(user);
+    } catch (err) {
+      throw new InternalServerErrorException(
+        'Server failed to update user profile image',
+        err,
+      );
+    }
   }
 
   async remove(codigo: string): Promise<User> {

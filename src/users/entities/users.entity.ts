@@ -19,10 +19,13 @@ export class User {
   @Column({ nullable: false })
   nombre: string;
 
-  @Column({ nullable: false })
+  @Column({ default: 0 })
   strikes: number;
 
   @Column({ nullable: false })
+  imagenCredencial: string;
+
+  @Column({ default: null })
   imagenPerfil: string;
 
   @CreateDateColumn({ nullable: false })

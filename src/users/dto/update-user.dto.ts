@@ -12,8 +12,4 @@ export class UpdateUserDto {
   @IsOptional()
   @IsInt()
   strikes: number;
-
-  @IsOptional()
-  @IsString()
-  imagenPerfil: string;
 }
