@@ -10,6 +10,7 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities';
 
 @Controller('user')
 export class UsersController {
@@ -23,6 +24,11 @@ export class UsersController {
   @Get('get/:codigo')
   findOne(@Param('codigo') codigo: string) {
     return this.usersService.findOne(codigo);
+  }
+
+  @Get('libros/:codigo')
+  getUserBooks(@Param('codigo') codigo: string) {
+    return this.usersService.getUserBooks(codigo);
   }
 
   @Patch('patch/:codigo')

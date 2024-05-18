@@ -1,13 +1,10 @@
+import { Book } from 'src/books/entities/book.entity';
 import { Credenciales } from 'src/credenciales/entities';
-import { Libro } from 'src/libro/libro.entity';
-import { UserLibro } from 'src/libro/user_libro.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryColumn,
@@ -41,6 +38,6 @@ export class User {
   credenciales: Credenciales;
 
   //implementar relacion con libros
-  @OneToMany(() => UserLibro, (userLibro) => userLibro.libro, { cascade: ['insert', 'update'] })
-  libros: UserLibro[]
+  @OneToMany(() => Book, (book) => book.user)
+  libros: Book[];
 }

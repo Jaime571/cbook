@@ -86,4 +86,23 @@ export class UsersService {
     this.userRepository.remove(user);
     return user;
   }
+
+  async getUserBooks(codigo: string): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne({
+        where: { codigo },
+        relations: {
+          libros: true,
+        },
+      });
+      if (!user) {
+        throw new NotFoundException('User not found in database');
+      }
+      return user;
+    } catch (err) {
+      throw new InternalServerErrorException(
+        'Server failed to get user with books',
+      );
+    }
+  }
 }
