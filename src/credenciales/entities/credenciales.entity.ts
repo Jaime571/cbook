@@ -3,14 +3,17 @@ import { Entity, Column, PrimaryColumn, OneToOne } from 'typeorm';
 
 @Entity()
 export class Credenciales {
-  @PrimaryColumn()
+  @PrimaryColumn({ nullable: false })
   codigo: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
-  @Column()
+  @Column({ nullable: false })
   correo: string;
+
+  @Column({ default: false })
+  habilitado: boolean;
 
   @OneToOne(() => User, (user) => user.credenciales)
   user: User;

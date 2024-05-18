@@ -4,6 +4,8 @@ import {
   IsStrongPassword,
   IsNotEmpty,
   Contains,
+  IsOptional,
+  IsBoolean,
 } from 'class-validator';
 
 export class CreateCredentialDto {
@@ -19,4 +21,8 @@ export class CreateCredentialDto {
   @IsEmail()
   @Contains('@alumnos.udg.mx')
   correo: string;
+
+  @IsOptional()
+  @IsBoolean()
+  habilitado: boolean;
 }

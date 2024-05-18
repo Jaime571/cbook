@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -6,10 +11,6 @@ import * as bcrypt from 'bcrypt';
 
 import { Credenciales } from './entities';
 import { CreateCredentialDto } from './dto/credenciales.dto';
-
-import { Controller, Get, Param } from '@nestjs/common';
-
-
 
 @Injectable()
 export class CredencialesService {
@@ -19,13 +20,15 @@ export class CredencialesService {
   ) {}
 
   async create(credential: CreateCredentialDto): Promise<CreateCredentialDto> {
-        // Verificar si el código de estudiante ya está registrado
+    // Verificar si el código de estudiante ya está registrado
     const existingCredential = await this.credencialesRepository.findOne({
       where: { codigo: credential.codigo },
     });
 
     if (existingCredential) {
-      throw new BadRequestException('El código de estudiante ya está registrado');
+      throw new BadRequestException(
+        'El código de estudiante ya está registrado',
+      );
     }
     credential.password = await this.maskPassword(credential.password);
     const newRecord = this.credencialesRepository.create(credential);
@@ -40,5 +43,23 @@ export class CredencialesService {
   async maskPassword(password: string): Promise<string> {
     const saltOrRounds = 10;
     return await bcrypt.hash(password, saltOrRounds);
+  }
+
+  async habilitateUser(
+    codigo: string,
+    habilitar: boolean,
+  ): Promise<CreateCredentialDto> {
+    try {
+      const user = await this.findOne(codigo);
+      if (!user) {
+        throw new NotFoundException('Credentials not found in database');
+      }
+      user.habilitado = habilitar;
+      return await this.credencialesRepository.save(user);
+    } catch (err) {
+      throw new InternalServerErrorException(
+        'Server failed to update habilitation of user',
+      );
+    }
   }
 }
