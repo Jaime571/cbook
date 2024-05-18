@@ -10,6 +10,12 @@ export class Book {
   titulo: string;
 
   @Column({ nullable: false })
+  isbn: string;
+
+  @Column({ nullable: false })
+  ano_de_publicacion: string;
+
+  @Column({ nullable: false })
   editorial: string;
 
   @Column({ nullable: false })

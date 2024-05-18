@@ -16,4 +16,12 @@ export class UpdateBookDto {
   @IsString()
   @IsOptional()
   sinopsis: string;
+
+  @IsString()
+  @IsOptional()
+  ano_de_publicacion: string;
+
+  @IsString()
+  @IsOptional()
+  isbn: string;
 }

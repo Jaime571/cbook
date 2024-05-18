@@ -20,4 +20,12 @@ export class CreateBookDto {
   @IsString()
   @IsNotEmpty()
   codigo: string;
+
+  @IsString()
+  @IsNotEmpty()
+  isbn: string;
+
+  @IsString()
+  @IsNotEmpty()
+  ano_de_publicacion: string;
 }

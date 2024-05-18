@@ -42,6 +42,8 @@ export class BooksService {
       book.editorial = createBookDto.editorial;
       book.autor = createBookDto.autor;
       book.sinopsis = createBookDto.sinopsis;
+      book.isbn = createBookDto.isbn;
+      book.ano_de_publicacion = createBookDto.ano_de_publicacion;
       book.user = user;
       book.imagen = url;
 
