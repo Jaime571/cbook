@@ -44,7 +44,11 @@ export class BooksService {
 
   async findAll() {
     try {
-      const books = await this.bookRepository.find();
+      const books = await this.bookRepository.find({
+        relations: {
+          user: true,
+        },
+      });
       if (!books || books.length === 0) {
         throw new NotFoundException('No books found in database');
       }
