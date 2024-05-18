@@ -9,7 +9,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { CredencialesModule } from 'src/credenciales/credenciales.module';
 import { UsersModule } from 'src/users/users.module';
 import { BooksModule } from 'src/books/books.module';
-import { Book } from 'src/books/entities/book.entity';
+import { UploadModule } from 'src/upload/upload.module';
 
 @Module({
   imports: [
@@ -36,6 +36,7 @@ import { Book } from 'src/books/entities/book.entity';
     CredencialesModule,
     UsersModule,
     BooksModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

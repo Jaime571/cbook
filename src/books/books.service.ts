@@ -9,20 +9,32 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Book } from './entities/book.entity';
 import { ILike, Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
+import { UploadService } from 'src/upload/upload.service';
+import { ImageTitleDto } from './dto/image-title.dto';
 
 @Injectable()
 export class BooksService {
   constructor(
     @InjectRepository(Book) private bookRepository: Repository<Book>,
     private userService: UsersService,
+    private readonly uploadService: UploadService,
   ) {}
 
-  async create(createBookDto: CreateBookDto, userCode: string) {
+  async create(file: Express.Multer.File, createBookDto: CreateBookDto) {
     try {
-      const user = await this.userService.findOne(userCode);
+      const user = await this.userService.findOne(createBookDto.codigo);
       if (!user) {
         throw new NotFoundException('User not found');
       }
+
+      const { titulo, codigo } = createBookDto;
+
+      const tituloCreator: ImageTitleDto = {
+        titulo,
+        codigo,
+      };
+
+      const url = await this.uploadService.upload(tituloCreator, file.buffer);
 
       // Crea un nuevo libro y asigna el usuario
       const book = new Book();
@@ -31,12 +43,17 @@ export class BooksService {
       book.autor = createBookDto.autor;
       book.sinopsis = createBookDto.sinopsis;
       book.user = user;
+      book.imagen = url;
 
       // Guarda el libro en la base de datos
       return await this.bookRepository.save(book);
     } catch (err) {
+      if (err instanceof NotFoundException) {
+        throw err;
+      }
+      // De lo contrario, lanza una InternalServerErrorException con un mensaje de error genérico
       throw new InternalServerErrorException(
-        'Server failed to create book',
+        'Server failed to retrieve books',
         err,
       );
     }
