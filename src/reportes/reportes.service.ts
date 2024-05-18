@@ -40,7 +40,11 @@ export class ReportesService {
 
   async getAllReports() {
     try {
-      return await this.reportRepository.find();
+      return await this.reportRepository.find({
+        relations: {
+          user: true,
+        },
+      });
     } catch (err) {
       throw new InternalServerErrorException(
         'Server failed to retrieve all reports',
