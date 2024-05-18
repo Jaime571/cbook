@@ -169,6 +169,9 @@ export class BooksService {
         where: {
           titulo: ILike(`%${cadena}%`), // Busca el título que contenga la cadena, ignorando mayúsculas y minúsculas
         },
+        relations: {
+          user: true,
+        },
       });
       if (!books || books.length === 0) {
         throw new NotFoundException('No books found with the provided title');
