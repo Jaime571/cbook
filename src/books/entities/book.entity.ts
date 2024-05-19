@@ -8,6 +8,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 

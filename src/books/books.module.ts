@@ -17,6 +17,7 @@ import { WishlistModule } from 'src/wishlist/wishlist.module';
     TypeOrmModule.forFeature([User, Book, Wishlist, Comentario]),
     CredencialesModule,
     WishlistModule,
+
   ],
   controllers: [BooksController],
 
