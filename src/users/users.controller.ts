@@ -15,6 +15,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { User } from './entities';
 
 @Controller('user')
 export class UsersController {
@@ -47,6 +48,11 @@ export class UsersController {
   @Get('withReports/:codigo')
   getUserWithReports(@Param('codigo') codigo: string) {
     return this.usersService.getUserWithReports(codigo);
+  }
+
+  @Get('noActive')
+  getNoActiveUsers(): Promise<User[]> {
+    return this.usersService.getNoActive();
   }
 
   @Patch('patch/:codigo')

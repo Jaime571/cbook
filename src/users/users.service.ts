@@ -183,6 +183,16 @@ export class UsersService {
     }
   }
 
+  async getNoActive(): Promise<User[]>{
+
+    const users = await this.userRepository.createQueryBuilder('user')
+        .innerJoinAndSelect('user.credenciales', 'credenciales')
+        .where('credenciales.habilitado = :habilitado', { habilitado: false })
+        .getMany();
+
+    return users;
+  }
+
   async addStrike(codigo: string): Promise<User> {
     try {
       const user = await this.userRepository.findOne({

@@ -23,7 +23,7 @@ export class User {
   @Column({ default: 0 })
   strikes: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, default: '' })
   imagenCredencial: string;
 
   @Column({ default: null })
