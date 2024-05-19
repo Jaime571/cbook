@@ -12,6 +12,7 @@ import { BooksModule } from 'src/books/books.module';
 import { UploadModule } from 'src/upload/upload.module';
 import { ChatModule } from 'src/chat/chat.module';
 import { ReportesModule } from 'src/reportes/reportes.module';
+import { ComentariosModule } from 'src/comentarios/comentarios.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ReportesModule } from 'src/reportes/reportes.module';
     UploadModule,
     ChatModule,
     ReportesModule,
+    ComentariosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

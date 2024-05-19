@@ -1,5 +1,6 @@
+import { Comentario } from 'src/comentarios/entities/comentario.entity';
 import { User } from 'src/users/entities';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('books')
 export class Book {
@@ -38,4 +39,7 @@ export class Book {
 
   @ManyToOne(() => User, (user) => user.libros)
   user: User;
+
+  @OneToMany(() => Comentario, (coment) => coment.book)
+  coments: Comentario[];
 }
