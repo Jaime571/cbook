@@ -1,5 +1,6 @@
 import { Book } from 'src/books/entities/book.entity';
 import { Credenciales } from 'src/credenciales/entities';
+import { Notification } from 'src/notificaciones/entities/notificaciones.entity';
 import { Report } from 'src/reportes/entities/reportes.entity';
 import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
 import {
@@ -50,4 +51,7 @@ export class User {
 
   @OneToMany(() => Report, (report) => report.user)
   reportes: Report[];
+
+  @OneToMany(() => Notification, (notification) => notification.user)
+  notificaciones: Notification[];
 }

@@ -55,7 +55,12 @@ export class UsersService {
   async findOne(codigo: string): Promise<User> {
     let user: User;
     try {
-      user = await this.userRepository.findOne({ where: { codigo } });
+      user = await this.userRepository.findOne({
+        where: { codigo },
+        relations: {
+          notificaciones: true,
+        },
+      });
     } catch (error) {
       throw new InternalServerErrorException(
         'Server failed to search for the user',

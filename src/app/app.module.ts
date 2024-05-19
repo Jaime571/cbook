@@ -13,6 +13,7 @@ import { UploadModule } from 'src/upload/upload.module';
 import { ChatModule } from 'src/chat/chat.module';
 import { ReportesModule } from 'src/reportes/reportes.module';
 import { ComentariosModule } from 'src/comentarios/comentarios.module';
+import { NotificacionesModule } from 'src/notificaciones/notificaciones.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { ComentariosModule } from 'src/comentarios/comentarios.module';
     ChatModule,
     ReportesModule,
     ComentariosModule,
+    NotificacionesModule
   ],
   controllers: [AppController],
   providers: [AppService],

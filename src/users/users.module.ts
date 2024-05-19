@@ -11,10 +11,17 @@ import { CredencialesModule } from 'src/credenciales/credenciales.module';
 import { BooksModule } from 'src/books/books.module';
 import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
 import { WishlistModule } from 'src/wishlist/wishlist.module';
+import { Notification } from 'src/notificaciones/entities/notificaciones.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Credenciales, Book, Wishlist]),
+    TypeOrmModule.forFeature([
+      User,
+      Credenciales,
+      Book,
+      Wishlist,
+      Notification,
+    ]),
     BooksModule,
     CredencialesModule,
     WishlistModule,

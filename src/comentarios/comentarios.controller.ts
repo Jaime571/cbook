@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ComentariosService } from './comentarios.service';
 import { CreateComentarioDto } from './dto/create-comentario.dto';
-import { UpdateComentarioDto } from './dto/update-comentario.dto';
 
 @Controller('comentarios')
 export class ComentariosController {
@@ -13,9 +12,7 @@ export class ComentariosController {
   }
 
   @Get('/get/:idLibro')
-  getCommentsFromABook( @Param('idLibro') idLibro: string,): Promise<any> {
+  getCommentsFromABook(@Param('idLibro') idLibro: string): Promise<any> {
     return this.comentariosService.getBooksComment(idLibro);
   }
-
- 
 }

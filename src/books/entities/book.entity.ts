@@ -1,13 +1,9 @@
 import { Comentario } from 'src/comentarios/entities/comentario.entity';
 import { User } from 'src/users/entities';
-import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
 import {
   Column,
   Entity,
-  ManyToMany,
   ManyToOne,
-  OneToMany,
-  OneToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
