@@ -45,4 +45,9 @@ export class CredencialesController {
   ): Promise<CreateCredentialDto> {
     return this.credencialesService.habilitateUser(codigo, body.habilitar); // Pasar directamente el valor booleano
   }
+
+  @Get('noActivas')
+  getNotActiveUsers() {
+    return this.credencialesService.getNotActiveUsers();
+  }
 }

@@ -42,10 +42,7 @@ export class UsersService {
       newRecord.imagenCredencial = url;
       return await this.userRepository.save(newRecord);
     } catch (err) {
-      throw new InternalServerErrorException(
-        'Server failed to create user:',
-        err,
-      );
+      return err;
     }
   }
 

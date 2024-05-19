@@ -62,4 +62,25 @@ export class CredencialesService {
       );
     }
   }
+
+  async getNotActiveUsers(): Promise<Credenciales[]> {
+    try {
+      const credenciales = await this.credencialesRepository.find({
+        where: { habilitado: false },
+      });
+
+      if (credenciales.length === 0) {
+        throw new NotFoundException(
+          'No se encontraron credenciales inactivas en la base de datos',
+        );
+      }
+
+      return credenciales;
+    } catch (err) {
+      throw new InternalServerErrorException(
+        'El servidor no pudo obtener usuarios inactivos:',
+        err,
+      );
+    }
+  }
 }

@@ -1,13 +1,45 @@
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+  ConnectedSocket,
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-import { Socket } from 'socket.io';
+import { Socket, Server } from 'socket.io';
+import { WebsocketExceptionFilter } from './ws-exception.filter';
 
-@WebSocketGateway(3502, {})
+class ChatMessage {
+  @IsNotEmpty()
+  @IsString()
+  nickname: string;
+
+  @IsNotEmpty()
+  @IsString()
+  message: string;
+}
+
+@WebSocketGateway(3502, {
+  cors: {
+    origin: '*',
+  },
+})
+@UseFilters(new WebsocketExceptionFilter())
 export class ChatGateway {
-  @SubscribeMessage('newMessage')
-  handleNewMessage(client: Socket, message: any) {
-    console.log(message);
+  @WebSocketServer()
+  server: Server;
 
-    client.emit('reply', 'This is a reply');
+  @SubscribeMessage('text-chat')
+  @UsePipes(new ValidationPipe())
+  handleNewMessage(
+    @MessageBody() message: ChatMessage,
+    @ConnectedSocket() _client: Socket,
+  ) {
+    this.server.emit('text-chat', {
+      ...message,
+      time: new Date().toDateString(),
+    });
   }
 }
