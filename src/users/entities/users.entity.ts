@@ -1,11 +1,14 @@
 import { Book } from 'src/books/entities/book.entity';
 import { Credenciales } from 'src/credenciales/entities';
 import { Report } from 'src/reportes/entities/reportes.entity';
+import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToMany,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryColumn,

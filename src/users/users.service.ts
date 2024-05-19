@@ -13,11 +13,13 @@ import { User } from './entities';
 import { UploadService } from 'src/upload/upload.service';
 import { UserImageInsertDto } from './dto/image-insert.dto';
 import { CredencialesService } from 'src/credenciales/credenciales.service';
+import { Book } from 'src/books/entities';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(Book) private bookRepository: Repository<Book>,
     private readonly uploadService: UploadService,
     private readonly credencialesService: CredencialesService,
   ) {}
@@ -183,13 +185,13 @@ export class UsersService {
     }
   }
 
-  async getNoActive(): Promise<User[]>{
-
-    const users = await this.userRepository.createQueryBuilder('user')
-        .innerJoinAndSelect('user.credenciales', 'credenciales')
-        .where('credenciales.habilitado = :habilitado', { habilitado: false })
-        // .orderBy('user.creadoEn', 'ASC')
-        .getMany();
+  async getNoActive(): Promise<User[]> {
+    const users = await this.userRepository
+      .createQueryBuilder('user')
+      .innerJoinAndSelect('user.credenciales', 'credenciales')
+      .where('credenciales.habilitado = :habilitado', { habilitado: false })
+      // .orderBy('user.creadoEn', 'ASC')
+      .getMany();
 
     return users;
   }

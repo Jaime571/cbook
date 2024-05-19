@@ -9,12 +9,15 @@ import { Book } from 'src/books/entities/book.entity';
 import { UploadService } from 'src/upload/upload.service';
 import { CredencialesModule } from 'src/credenciales/credenciales.module';
 import { BooksModule } from 'src/books/books.module';
+import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
+import { WishlistModule } from 'src/wishlist/wishlist.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Credenciales, Book]),
+    TypeOrmModule.forFeature([User, Credenciales, Book, Wishlist]),
     BooksModule,
     CredencialesModule,
+    WishlistModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, UploadService],
