@@ -204,4 +204,23 @@ export class BooksService {
       throw new NotFoundException('No books found with the provided title');
     }
   }
+
+  async getBooksById(cadena: string): Promise<Book[]> {
+    try {
+      const books = await this.bookRepository.find({
+        where: {
+          idLibro: cadena, // Busca el título que contenga la cadena, ignorando mayúsculas y minúsculas
+        },
+        relations: {
+          user: true,
+        },
+      });
+      if (!books || books.length === 0) {
+        throw new NotFoundException('No books found with the provided title');
+      }
+      return books;
+    } catch (err) {
+      throw new NotFoundException('No books found with the provided title');
+    }
+  }
 }

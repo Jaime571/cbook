@@ -66,4 +66,8 @@ export class BooksController {
   getBooksByTitle(@Param('cadena') cadena: string) {
     return this.booksService.getBooksByTitle(cadena);
   }
+  @Get('/byId/:cadena')
+  getBooksById(@Param('cadena') cadena: string) {
+    return this.booksService.getBooksById(cadena);
+  }
 }
