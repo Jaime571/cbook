@@ -1,3 +1,4 @@
+import { Comentario } from 'src/comentarios/entities/comentario.entity';
 import { User } from 'src/users/entities';
 import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
 import {
@@ -46,4 +47,7 @@ export class Book {
 
   @ManyToOne(() => User, (user) => user.libros)
   user: User;
+
+  @OneToMany(() => Comentario, (coment) => coment.book)
+  coments: Comentario[];
 }

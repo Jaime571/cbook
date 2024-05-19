@@ -8,12 +8,12 @@ import { UsersService } from 'src/users/users.service';
 import { UploadService } from 'src/upload/upload.service';
 import { CredencialesService } from 'src/credenciales/credenciales.service';
 import { CredencialesModule } from 'src/credenciales/credenciales.module';
-import { WishlistModule } from 'src/wishlist/wishlist.module';
+import { Comentario } from 'src/comentarios/entities/comentario.entity';
 import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Book, Wishlist]),
+    TypeOrmModule.forFeature([User, Book, Wishlist, Comentario]),
     CredencialesModule,
     WishlistModule,
   ],
