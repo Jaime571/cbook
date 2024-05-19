@@ -1,5 +1,13 @@
 import { User } from 'src/users/entities';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('books')
 export class Book {
