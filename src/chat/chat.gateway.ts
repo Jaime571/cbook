@@ -1,45 +1,45 @@
-import { UseFilters, UsePipes, ValidationPipe } from '@nestjs/common';
+// src/chat/chat.gateway.ts
+
 import {
-  ConnectedSocket,
-  MessageBody,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
+  SubscribeMessage,
+  MessageBody,
+  ConnectedSocket,
+  OnGatewayConnection,
 } from '@nestjs/websockets';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { Server, Socket } from 'socket.io';
+import { ChatService } from './chat.service';
 
-import { Socket, Server } from 'socket.io';
-import { WebsocketExceptionFilter } from './ws-exception.filter';
-
-class ChatMessage {
-  @IsNotEmpty()
-  @IsString()
-  nickname: string;
-
-  @IsNotEmpty()
-  @IsString()
-  message: string;
-}
-
-@WebSocketGateway(3502, {
-  cors: {
-    origin: '*',
-  },
-})
-@UseFilters(new WebsocketExceptionFilter())
-export class ChatGateway {
+@WebSocketGateway()
+export class ChatGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('text-chat')
-  @UsePipes(new ValidationPipe())
-  handleNewMessage(
-    @MessageBody() message: ChatMessage,
-    @ConnectedSocket() _client: Socket,
-  ) {
-    this.server.emit('text-chat', {
-      ...message,
-      time: new Date().toDateString(),
+  constructor(private chatService: ChatService) {}
+
+  @SubscribeMessage('chat message')
+  async handleMessage(
+    @MessageBody() data: { message: string, room: string },
+    @ConnectedSocket() client: Socket,
+  ): Promise<void> {
+    const { message, room } = data;
+    const username = client.handshake.auth.username || 'anonymous';
+    const savedMessage = await this.chatService.create(message, username, room);
+    this.server.to(room).emit('chat message', { message, username });
+  }
+
+  async handleConnection(client: Socket) {
+    let { room } = client.handshake.query;
+
+    if (Array.isArray(room)) {
+      room = room[0]; // Tomar la primera sala si hay varias
+    }
+
+    client.join(room);
+    const messages = await this.chatService.findAll(room);
+    messages.forEach((message) => {
+      client.emit('chat message', { message: message.content, username: message.user });
     });
   }
 }
