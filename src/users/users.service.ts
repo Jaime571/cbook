@@ -188,6 +188,7 @@ export class UsersService {
     const users = await this.userRepository.createQueryBuilder('user')
         .innerJoinAndSelect('user.credenciales', 'credenciales')
         .where('credenciales.habilitado = :habilitado', { habilitado: false })
+        .orderBy('user.createdEn', 'DESC')
         .getMany();
 
     return users;

@@ -87,3 +87,8 @@ export class UsersController {
     return this.usersService.addStrike(codigo);
   }
 }
+
+// SELECT *
+// FROM users
+// INNER JOIN credenciales ON users.codigo = credenciales.codigo
+// WHERE credenciales.habilitado = false;
