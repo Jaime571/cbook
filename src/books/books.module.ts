@@ -10,6 +10,7 @@ import { CredencialesService } from 'src/credenciales/credenciales.service';
 import { CredencialesModule } from 'src/credenciales/credenciales.module';
 import { Comentario } from 'src/comentarios/entities/comentario.entity';
 import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
+import { WishlistModule } from 'src/wishlist/wishlist.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { Wishlist } from 'src/wishlist/entities/wishlist.entity';
     WishlistModule,
   ],
   controllers: [BooksController],
+
   providers: [BooksService, UsersService, UploadService, CredencialesService],
   exports: [],
 })
