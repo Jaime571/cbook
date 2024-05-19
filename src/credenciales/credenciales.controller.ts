@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CredencialesService } from './credenciales.service';
 import { CreateCredentialDto } from './dto/credenciales.dto';
 import * as bcrypt from 'bcrypt';
+import { Credenciales } from './entities';
 
 @Controller('credenciales')
 export class CredencialesController {
@@ -33,7 +34,7 @@ export class CredencialesController {
     }
   }
 
-  @Get(':codigo')
+  @Get('/obtener/:codigo')
   getOne(@Param('codigo') codigo: string): Promise<CreateCredentialDto> {
     return this.credencialesService.findOne(codigo);
   }
@@ -47,7 +48,7 @@ export class CredencialesController {
   }
 
   @Get('noActivas')
-  getNotActiveUsers() {
+  getNotActiveUsers(): Promise<Credenciales[]> {
     return this.credencialesService.getNotActiveUsers();
   }
 }
