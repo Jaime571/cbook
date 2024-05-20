@@ -13,23 +13,32 @@ export class ComentariosService {
     private comentarioesRepository: Repository<Comentario>,
     @InjectRepository(Book)
     private libroRepository: Repository<Book>,
-  ) { }
+  ) {}
 
   async create(createComentarioDto: CreateComentarioDto): Promise<any> {
-
-    const book = await this.getBookById(createComentarioDto.idLibro);
+    const book: Book[] = await this.getBookById(createComentarioDto.idLibro);
     const payload = {
       comentario: createComentarioDto.comentario,
       book: book[0],
       calificacion: createComentarioDto.calificacion,
-    }
+    };
+
+    let sumaCalificaciones = createComentarioDto.calificacion;
+
+    // Iterar sobre todos los comentarios para sumar las calificaciones
+    book[0].coments.forEach((comentario) => {
+      sumaCalificaciones += comentario.calificacion;
+    });
+    sumaCalificaciones /= book[0].coments.length + 1;
+    book[0].calificacion = sumaCalificaciones;
+    const nuevolibro = await this.libroRepository.save(book[0]);
+    console.log(nuevolibro);
 
     const resp = this.comentarioesRepository.create(payload);
     return this.comentarioesRepository.save(resp);
   }
 
   async getBooksComment(id: string): Promise<any> {
-
     let calificacion = 0;
 
     const comments = await this.comentarioesRepository
@@ -40,17 +49,17 @@ export class ComentariosService {
         'comentario.id',
         'comentario.comentario',
         'comentario.calificacion',
-        'comentario.fecha'
-    ])
+        'comentario.fecha',
+      ])
       .getMany();
 
-    comments.forEach(comment => {
-      calificacion += comment.calificacion
+    comments.forEach((comment) => {
+      calificacion += comment.calificacion;
     });
 
     calificacion /= comments.length;
 
-    return {comments, calificacion};
+    return { comments, calificacion };
   }
 
   async getBookById(cadena: string): Promise<Book[]> {
@@ -58,7 +67,10 @@ export class ComentariosService {
       const books = await this.libroRepository.find({
         where: {
           idLibro: cadena, // Busca el título que contenga la cadena, ignorando mayúsculas y minúsculas
-        }
+        },
+        relations: {
+          coments: true,
+        },
       });
       if (!books || books.length === 0) {
         throw new NotFoundException('No books found with the provided title');
@@ -69,8 +81,6 @@ export class ComentariosService {
     }
   }
 }
-
-
 
 // INSERT INTO books (
 //   idLibro,
