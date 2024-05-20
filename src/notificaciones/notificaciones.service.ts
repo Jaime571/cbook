@@ -18,7 +18,6 @@ export class NotificacionesService {
     const { codigoUsuario, mensaje } = createNotificationDto;
     const usuario = await this.userService.findOne(codigoUsuario);
 
-    console.log(usuario);
     if (!usuario) {
       throw new NotFoundException('User not found in database');
     }

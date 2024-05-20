@@ -18,8 +18,6 @@ export class AuthController {
       const decoded = await this.authService.verifyToken(access_token);
       return { isValid: true, decoded };
     } catch (error) {
-      console.log('Error al autenticar:', error);
-
       return { isValid: false };
     }
   }

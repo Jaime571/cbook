@@ -1,5 +1,3 @@
-import { Book } from 'src/books/entities';
-import { User } from 'src/users/entities';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()

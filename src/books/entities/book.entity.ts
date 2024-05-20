@@ -34,7 +34,7 @@ export class Book {
   @Column({ default: 'none' })
   imagen: string;
 
-  @Column({ default: 0 })
+  @Column({ default: 0, type: 'real' })
   calificacion: number;
 
   @Column({ default: 0 })
