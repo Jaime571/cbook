@@ -1,5 +1,11 @@
 import { User } from 'src/users/entities';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity('notificaciones')
 export class Notification {
@@ -11,6 +17,9 @@ export class Notification {
 
   @Column({ default: false })
   resuelto: boolean;
+
+  @CreateDateColumn()
+  fecha: Date;
 
   @ManyToOne(() => User, (user) => user.notificaciones)
   user: User;

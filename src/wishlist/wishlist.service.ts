@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -17,6 +21,16 @@ export class WishlistService {
 
   async create(createWishlistDto: CreateWishlistDto) {
     const { codigo, idLibro } = createWishlistDto;
+    const elemento = await this.wishlistRepository.find({
+      where: {
+        codigoUsuario: codigo,
+        idDelLibro: idLibro,
+      },
+    });
+
+    if (elemento.length > 0) {
+      throw new BadRequestException('El libro ya esta en la lista de deseados');
+    }
     const ListElement = new Wishlist();
     ListElement.codigoUsuario = codigo;
     ListElement.idDelLibro = idLibro;
