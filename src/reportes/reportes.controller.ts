@@ -24,7 +24,7 @@ export class ReportesController {
   }
 
   @Patch('resolve/:idReport')
-  resolveReport(@Param('idReporte') idReporte: string) {
+  resolveReport(@Param('idReport') idReporte: string) {
     return this.reportesService.resolveReport(idReporte);
   }
 }

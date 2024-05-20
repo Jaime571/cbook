@@ -69,6 +69,7 @@ export class ReportesService {
   }
 
   async resolveReport(idReporte: string) {
+    console.log(idReporte)
     try {
       const reporte = await this.reportRepository.findOne({
         where: {

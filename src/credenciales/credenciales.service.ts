@@ -11,13 +11,20 @@ import * as bcrypt from 'bcrypt';
 
 import { Credenciales } from './entities';
 import { CreateCredentialDto } from './dto/credenciales.dto';
+import { Notification } from 'src/notificaciones/entities/notificaciones.entity';
+import { CreateNotificationDto } from 'src/notificaciones/dto/create-notification.dto';
+import { User } from 'src/users/entities';
 
 @Injectable()
 export class CredencialesService {
   constructor(
     @InjectRepository(Credenciales)
     private credencialesRepository: Repository<Credenciales>,
-  ) {}
+    @InjectRepository(Notification)
+    private notificacionesRepository: Repository<Notification>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) { }
 
   async create(credential: CreateCredentialDto): Promise<CreateCredentialDto> {
     // Verificar si el código de estudiante ya está registrado
@@ -55,6 +62,11 @@ export class CredencialesService {
         throw new NotFoundException('Credentials not found in database');
       }
       user.habilitado = habilitar;
+      const payload = {
+        codigoUsuario: user.codigo,
+        mensaje: 'Fuiste verificado! - Disfruta de la aplicacion'
+      }
+      this.addComent(payload)
       return await this.credencialesRepository.save(user);
     } catch (err) {
       throw new InternalServerErrorException(
@@ -82,5 +94,26 @@ export class CredencialesService {
         err,
       );
     }
+  }
+
+  async addComent(createNotificationDto: CreateNotificationDto) {
+    const { codigoUsuario, mensaje } = createNotificationDto;
+    const usuario = await this.userRepository.findOne({
+      where: { codigo: codigoUsuario },
+      relations: {
+        notificaciones: true,
+      },
+    });
+
+    console.log(usuario);
+    if (!usuario) {
+      throw new NotFoundException('User not found in database');
+    }
+
+    const notification = new Notification();
+    notification.mensaje = mensaje;
+    notification.user = usuario;
+
+    return await this.notificacionesRepository.save(notification);
   }
 }
