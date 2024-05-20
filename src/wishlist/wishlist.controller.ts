@@ -29,22 +29,4 @@ export class WishlistController {
   borrar(@Body() createWishlistDto: CreateWishlistDto) {
     return this.wishlistService.borrar(createWishlistDto);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.wishlistService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateWishlistDto: UpdateWishlistDto,
-  ) {
-    return this.wishlistService.update(+id, updateWishlistDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.wishlistService.remove(+id);
-  }
 }

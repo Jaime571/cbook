@@ -11,6 +11,7 @@ import { ILike, Repository } from 'typeorm';
 import { UsersService } from 'src/users/users.service';
 import { UploadService } from 'src/upload/upload.service';
 import { ImageTitleDto } from './dto/image-title.dto';
+import { WishlistService } from 'src/wishlist/wishlist.service';
 
 @Injectable()
 export class BooksService {
@@ -18,6 +19,7 @@ export class BooksService {
     @InjectRepository(Book) private bookRepository: Repository<Book>,
     private userService: UsersService,
     private readonly uploadService: UploadService,
+    private readonly wishlistService: WishlistService,
   ) {}
 
   async create(file: Express.Multer.File, createBookDto: CreateBookDto) {
@@ -125,6 +127,14 @@ export class BooksService {
       if (!libroExistente) {
         throw new NotFoundException('Book not found');
       }
+
+      if (
+        libroExistente.disponible === false &&
+        updateBookDto.disponible === true
+      ) {
+        await this.wishlistService.sendWishListNoti(idLibro);
+      }
+
       // Actualiza las propiedades del libro con los datos proporcionados
       this.bookRepository.merge(libroExistente, updateBookDto);
       return await this.bookRepository.save(libroExistente);
