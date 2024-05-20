@@ -32,7 +32,7 @@ export class UploadService {
       }),
     );
 
-    const url = `https://image.bucket.for.cbook.webapp.20112004.s3.amazonaws.com/${fileName}`; // Cambia 'your-bucket' por el nombre de tu bucket
+    const url = `https://s3.us-east-2.amazonaws.com/image.bucket.for.cbook.webapp.20112004/${fileName}`; // Cambia 'your-bucket' por el nombre de tu bucket
 
     // Puedes devolver la URL aquí o almacenarla en tu base de datos
     return url;
@@ -55,7 +55,7 @@ export class UploadService {
       }),
     );
 
-    const url = `https://image.bucket.for.cbook.webapp.20112004.s3.amazonaws.com/${fileName}`; // Cambia 'your-bucket' por el nombre de tu bucket
+    const url = `https://s3.us-east-2.amazonaws.com/image.bucket.for.cbook.webapp.20112004/${fileName}`; // Cambia 'your-bucket' por el nombre de tu bucket
 
     // Puedes devolver la URL aquí o almacenarla en tu base de datos
     return url;
